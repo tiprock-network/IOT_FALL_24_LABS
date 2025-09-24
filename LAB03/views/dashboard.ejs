@@ -1,0 +1,454 @@
+<%- include('_partials/header.ejs') %>
+<!--The above section brings in the head tags and also adds the starting part of the body-->
+
+<!--Insert Chart.js CDN here-->
+<script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+
+
+
+<div class="maintopContainer">
+    <div class="topContSect">
+        <h2>Smart Room Assitant | Dashboard</h2>
+       <div class="innerContent">
+         <p class="partA">Dear User, welcome to your dashboard. You can now easily switch on and off your lights. To make it easier for you. Try and switch of all the lights using the button below.</p>
+            <div class="innerContSect">
+                <input type="text" name="rmNameInput" id="rmName" class="innerContInput" placeholder="e.g Kitchen Area">
+                <button id="innerContAddBtn">Add Room</button>
+            </div>
+
+       </div>
+    </div>
+
+    <div class="topContSect">
+         <div class="topContSectLabel">
+            <p>Rooms Panel</p>
+            <button id="btnToggleAllLightsOn">Turn On Lights</button>
+            <button id="btnToggleAllLightsOff">Turn Off Lights</button>
+        </div>
+         
+         <div class="messagesContainer" id="msgCont">
+            <!--<div class="successMsg" id="passMsg">
+                <p><i class="fa fa-circle-check"></i> Hello, this message!</p>
+            </div>
+
+            
+
+             <div class="warnMsg" id="warningMsg">
+                <p><i class="fa fa-triangle-exclamation"></i> Hello, this message!</p>
+            </div>-->
+
+            
+
+         </div>
+
+         <div class="roomsContainer" id="rmContainer">
+            <!--Room Cards get populated by JavaScript Fetch API-->
+
+         </div>
+    </div>
+</div>
+
+<div class="chartContainerBox">
+    <canvas id="chartContainer" width="300" height="80"></canvas>
+</div>
+
+<script>
+
+(async () => {
+    
+    const roomsContainer = document.getElementById('rmContainer')
+    const ctx = document.getElementById('chartContainer').getContext('2d')
+    const roomsBtnToggleOn = document.getElementById('btnToggleAllLightsOn')
+    const roomsBtnToggleOff = document.getElementById('btnToggleAllLightsOff')
+    const roomNameInput = document.getElementById('rmName')
+    const roomNameBtn = document.getElementById('innerContAddBtn')
+    const messageContainer = document.getElementById('msgCont')
+    const MAX_POINTS = 50
+
+    
+
+    roomsBtnToggleOn.addEventListener('click', async () => {
+        
+            try {
+                const toggleResponse = await fetch(`/api/rooms/lights/on`, {
+                    method: 'PATCH',
+                    headers: {
+                    'Content-Type': 'application/json'
+                    }
+                })
+
+                if (toggleResponse.status != 204) {
+                    console.error('Failed to toggle light')
+                    messageContainer.innerHTML = `<div class="errorMsg" id="failMsg">
+                                <p><i class="fa fa-circle-exclamation"></i> ${(await toggleResponse.json()).message}</p>
+                            </div>`
+                    return;
+                }
+                
+                // Re-fetch and re-render rooms
+                await fetchRooms()
+
+                // Reattach event listeners to new buttons
+                document.querySelectorAll('.rmLightBtn').forEach(btn => {
+                    btn.addEventListener('click', () => {
+                        const roomId = btn.getAttribute('data-room-id')
+                        const lightStatus = btn.getAttribute('light-btn-status')
+                        toggleRmLight(roomId,lightStatus);
+                    })
+                })
+
+                 // Attach del listeners after rendering
+                document.querySelectorAll('.rmDelBtn').forEach(btn => {
+                    btn.addEventListener('click', () => {
+                        const roomId = btn.getAttribute('data-room-id')
+                        delRm(roomId)
+                    })
+                })
+
+            } catch (error) {
+                console.error('Toggle error:', error.message)
+                messageContainer.innerHTML = `<div class="errorMsg" id="failMsg"> <p><i class="fa fa-circle-exclamation"></i> ${error.message}</p> </div>`
+            }
+        
+    })
+
+    roomsBtnToggleOff.addEventListener('click', async () => {
+        
+            try {
+                const toggleResponse = await fetch(`/api/rooms/lights/off`, {
+                    method: 'PATCH',
+                    headers: {
+                    'Content-Type': 'application/json'
+                    }
+                })
+
+                if (toggleResponse.status != 204) {
+                    console.error('Failed to toggle light')
+                    messageContainer.innerHTML = `<div class="errorMsg" id="failMsg">
+                                <p><i class="fa fa-circle-exclamation"></i> ${(await toggleResponse.json()).message}</p>
+                            </div>`
+                    return;
+                }
+                
+                // Re-fetch and re-render rooms
+                await fetchRooms()
+
+                // Reattach event listeners to new buttons
+                document.querySelectorAll('.rmLightBtn').forEach(btn => {
+                    btn.addEventListener('click', () => {
+                        const roomId = btn.getAttribute('data-room-id')
+                        const lightStatus = btn.getAttribute('light-btn-status')
+                        toggleRmLight(roomId,lightStatus);
+                    })
+                })
+
+                 // Attach del listeners after rendering
+                document.querySelectorAll('.rmDelBtn').forEach(btn => {
+                    btn.addEventListener('click', () => {
+                        const roomId = btn.getAttribute('data-room-id')
+                        delRm(roomId)
+                    })
+                })
+            } catch (error) {
+                console.error('Toggle error:', error.message)
+                messageContainer.innerHTML = `<div class="errorMsg" id="failMsg"> <p><i class="fa fa-circle-exclamation"></i> ${error.message}</p> </div>`
+            }
+        
+    })
+
+    roomNameBtn.addEventListener('click', async () => {
+        
+        const addResponse = await fetch(`/api/rooms?limit=2`, {
+                    method: 'POST',
+                    headers: {
+                    'Content-Type': 'application/json'
+                    },
+                    body: JSON.stringify({ rmName: roomNameInput.value })
+                    
+        })
+
+        if (addResponse.status != 201) {
+            console.error('Failed to toggle light')
+            messageContainer.innerHTML = `<div class="errorMsg" id="failMsg">
+                        <p><i class="fa fa-circle-exclamation"></i> ${(await addResponse.json()).message}</p>
+                    </div>`
+            return;
+        }
+        
+
+       
+        roomNameInput.value = null
+        
+        //tell the user to wait
+        messageContainer.innerHTML = ` <div class="proMsg" id="processMsg">
+                <p><i class="fa-regular fa-clock"></i> Adding room, please wait for a few seconds...</p>
+            </div>`
+
+       setTimeout( () => {
+         location.reload()
+       },5000)
+
+       
+        
+    })
+
+    const fetchRooms = async () => {
+        try {
+            const response = await fetch('/api/rooms')
+            const result = await response.json()
+            const rooms = result.rooms
+
+            roomsContainer.innerHTML = ''
+
+            rooms.forEach(room => {
+            
+                
+
+                const lightState = room.light ? 'On' : 'Off';
+                const cardClass = room.light ? 'rmCardLight' : 'rmCardLightOff';
+                const bulbImage = room.light ? '/img/bulb-on.svg' : '/img/bulb-off.svg';
+                const buttonText = room.light ? 'Turn Off' : 'Turn On';
+
+                roomsContainer.innerHTML += `
+                    <div class="rmCard">
+                        <div class="rmCardDel"><button class="rmDelBtn" data-room-id="${room.id}"><i class="fa-regular fa-circle-xmark"></i></button></div>
+                        <h3>${room.name}</h3>
+                        <br>
+                        <div class="rmCardTemp">
+                            <p><i class="fa fa-temperature-low"></i> <span class="smallPText">Temp (&deg; C)</span></p> 
+                            <p class="tempValTxt"> | ${room.temperature ?? '--'} &deg; C</p>
+                        </div>
+                        <div class="${cardClass}">
+                            <button class="rmLightBtn" data-room-id="${room.id}" light-btn-status="${room.light?"on":"off"}">${buttonText}</button>
+                            <img src="${bulbImage}" />
+                        </div>
+                    </div>
+                `;
+            });
+
+            // Attach toggle listeners after rendering
+            document.querySelectorAll('.rmLightBtn').forEach(btn => {
+                btn.addEventListener('click', () => {
+                    const roomId = btn.getAttribute('data-room-id')
+                    const lightStatus = btn.getAttribute('light-btn-status')
+                    toggleRmLight(roomId,lightStatus);
+                });
+            });
+
+            // Attach del listeners after rendering
+            document.querySelectorAll('.rmDelBtn').forEach(btn => {
+                btn.addEventListener('click', () => {
+                    const roomId = btn.getAttribute('data-room-id')
+                    delRm(roomId)
+                });
+            });
+
+
+            return rooms;
+        } catch (error) {
+            console.error('Room fetch error:', error.message);
+            return [];
+        }
+    }
+
+    const fetchRecentTemps = async () => {
+        try {
+            const response = await fetch('/api/rooms/temperature_logs?limit=100');
+            const result = await response.json();
+            return result.temps;
+        } catch (error) {
+            console.error('Temperature fetch error:', error.message);
+            return [];
+        }
+    }
+
+    document.querySelectorAll('.rmLightBtn').forEach(btn => {
+        btn.addEventListener('click', () => {
+            const roomId = btn.getAttribute('data-room-id')
+            const lightStatus = btn.getAttribute('light-btn-status')
+            toggleRmLight(roomId,lightStatus);
+        })
+    })
+
+    // Attach del listeners after rendering
+    document.querySelectorAll('.rmDelBtn').forEach(btn => {
+        btn.addEventListener('click', () => {
+            const roomId = btn.getAttribute('data-room-id')
+            delRm(roomId)
+        });
+    });
+
+    async function toggleRmLight(id,lightStatus) {
+        try {
+            const toggleResponse = await fetch(`/api/rooms/${id}/light`, {
+                method: 'PATCH',
+                headers: {
+                'Content-Type': 'application/json'
+                },
+                body: JSON.stringify({ lightStatus: lightStatus })
+            })
+
+            if (toggleResponse.status != 204) {
+                console.error('Failed to toggle light')
+                return;
+            }
+
+            // Re-fetch and re-render rooms
+            await fetchRooms()
+
+            // Reattach event listeners to new buttons
+            document.querySelectorAll('.rmLightBtn').forEach(btn => {
+                btn.addEventListener('click', () => {
+                    const roomId = btn.getAttribute('data-room-id')
+                    const lightStatus = btn.getAttribute('light-btn-status')
+                    toggleRmLight(roomId,lightStatus);
+                });
+            });
+
+            // Attach del listeners after rendering
+            document.querySelectorAll('.rmDelBtn').forEach(btn => {
+                btn.addEventListener('click', () => {
+                    const roomId = btn.getAttribute('data-room-id')
+                    delRm(roomId)
+                });
+            });
+        } catch (error) {
+            console.error('Toggle error:', error.message)
+        }
+    }
+
+    async function delRm(id) {
+        try {
+            const toggleResponse = await fetch(`/api/rooms/${id}`, {
+                method: 'DELETE',
+                headers: {
+                'Content-Type': 'application/json'
+                },
+                
+            })
+
+            if (!toggleResponse.ok) {
+                console.error('Failed to toggle light')
+                messageContainer.innerHTML = `<div class="errorMsg" id="failMsg">
+                        <p><i class="fa fa-circle-exclamation"></i> Operation failed!</p>
+                    </div>`
+                return;
+            }
+
+            //tell the user to wait
+            messageContainer.innerHTML = ` <div class="warnMsg" id="warningMsg">
+                <p><i class="fa fa-triangle-exclamation"></i> Deleting Room with ID:${id}...</p>
+            </div>`
+
+            setTimeout( () => {
+                location.reload()
+            },1500)
+        } catch (error) {
+            console.error('Toggle error:', error.message)
+        }
+    }
+
+    const rooms = await fetchRooms()
+    const roomMap = Object.fromEntries(rooms.map(room => [room.id, room.name]))
+
+    const chart = new Chart(ctx, {
+        type: 'line',
+        data: {
+            labels: [],
+            datasets: rooms.map((room, index) => {
+                const hue = (270 - index * 30 + 360) % 360;
+                return {
+                    label: room.name,
+                    room_id: room.id,
+                    data: [],
+                    fill: true,
+                    borderColor: `hsl(${hue}, 70%, 50%)`,
+                    //backgroundColor: `hsla(${hue}, 70%, 50%, 0.2)`,
+                    backgroundColor: `transparent`,
+                    tension: 0.1,
+                    pointRadius: 3,
+                    borderWidth: 2,
+                };
+            })
+        },
+        options: {
+            responsive: true,
+            animation: false,
+            plugins: {
+                legend: { display: true, position: 'top' },
+                tooltip: {
+                    enabled: true,
+                    mode: 'index',
+                    intersect: false,
+                    callbacks: {
+                        label: context => {
+                            const value = context.parsed.y;
+                            return `${context.dataset.label}: ${value?.toFixed(2)} °C`;
+                        }
+                    }
+                }
+            },
+            scales: {
+                x: {
+                    title: { display: true, text: 'Timestamp' },
+                    grid: { display: false },
+                    ticks: { maxRotation: 90, minRotation: 90, autoSkip: false }
+                },
+                y: {
+                    title: { display: true, text: 'Temperature (°C)' },
+                    beginAtZero: false,
+                    grid: { display: false }
+                }
+            }
+        }
+    });
+
+    const refreshChart = async () => {
+        const temps = await fetchRecentTemps();
+        if (!temps.length) return;
+
+        const grouped = {};
+        temps.forEach(entry => {
+            const time = new Date(entry.time).toLocaleTimeString('en-US', {
+                hour: '2-digit',
+                minute: '2-digit',
+                second: '2-digit',
+                hour12: false
+            });
+            if (!grouped[time]) grouped[time] = {};
+            grouped[time][entry.room_id] = entry.value;
+        });
+
+        const labels = Object.keys(grouped).slice(-MAX_POINTS);
+        chart.data.labels = labels;
+
+        chart.data.datasets.forEach(ds => {
+            ds.data = labels.map(time => grouped[time]?.[ds.room_id] ?? null);
+        });
+
+        const allValues = chart.data.datasets.flatMap(ds => ds.data).filter(v => v !== null);
+        chart.options.scales.y.min = allValues.length ? Math.min(...allValues) - 1 : 0;
+        chart.options.scales.y.max = allValues.length ? Math.max(...allValues) + 1 : 30;
+
+        chart.update();
+    };
+
+    await refreshChart();
+    setInterval(refreshChart, 5000)
+
+    //update temperatures by polling after 5 seconds + 500ms
+    setInterval(() => {
+        fetchRooms()
+    }, 5500)
+
+})();
+
+
+</script>
+
+
+
+
+
+<!--The section below brings in the footer of the page and ending closing HTML tags-->
+<%- include('_partials/footer.ejs') %>

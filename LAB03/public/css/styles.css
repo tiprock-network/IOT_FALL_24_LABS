@@ -1,0 +1,438 @@
+@import url('https://fonts.googleapis.com/css2?family=Montserrat:ital,wght@0,100..900;1,100..900&display=swap');
+*{
+    margin: 0;
+}
+:root{
+    --appFont: "Montserrat", sans-serif;
+    --textColor: #333;
+    --textSize: 14px;
+    --appColor: rgb(44, 98, 190);
+}
+
+body{
+    overflow-x: hidden;
+    font-family: var(--appFont);
+    font-size: var(--textSize);
+    color: var(--textSize);
+    height: 100vh;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+}
+
+nav{
+    display: flex;
+    flex-direction: row;
+    /*justify-content: center;*/
+    align-items: center;
+    font-size: 16px;
+    padding: 5px 0px 15px 10px;
+    border: none;
+    box-shadow: 0px 2px 4px 2px #e0e0e0;
+    width: 100%;
+    
+}
+
+nav> ul{
+    list-style: none;
+    display: flex;
+    flex-direction: row;
+    /*border: 1px solid #ccc;*/
+    padding: 10px;
+}
+
+nav>ul>li>a{
+    text-decoration: none;
+    color: var(--textColor);
+    margin: 0px 10px 0px 10px ;
+    font-size: 16px;
+    font-weight: 500;
+    padding-bottom: 5px;
+}
+
+nav>ul>li>a:hover{
+    border-bottom: 2px solid var(--appColor);
+}
+
+.fa-house-signal{
+    font-size: 20px;
+    color: var(--appColor);
+}
+
+.maintopContainer{
+    width: 100%;
+    display: flex;
+    flex-direction: row;
+    flex-wrap: wrap;
+    justify-content: center;
+    align-items: center;
+    /*border: 1px solid #ccc;*/
+    padding: 20px 0px 20px 0px;
+    gap: 20px;
+}
+
+.maintopContainer> .topContSect{
+    width: 45%;
+    height: 40vh;
+    border: none;
+    border-radius: 10px;
+    padding: 15px;
+    font-weight: 400;
+    
+}
+
+.maintopContainer> .topContSect:nth-child(1){
+    box-shadow: 20px 20px 50px 50px rgba(218, 235, 251, 0.845) inset;
+    background: url('/img/room.jpg');
+    background-size: cover;
+    background-repeat: no-repeat;
+    background-position: center;
+}
+
+.maintopContainer> .topContSect:nth-child(2){
+    box-shadow: 0px 4px 4px #e0e0e0;
+    
+}
+
+.maintopContainer> .topContSect> .innerContent{
+    background-color: #33333364;
+    height: 50%;
+    width: 90%;
+    padding: 15px;
+    margin-top: 10px;
+    border-radius: 5px;
+}
+
+
+.maintopContainer> .topContSect> .innerContent> .innerContSect{
+    width: 100%;
+    display: flex;
+    flex-wrap: wrap;
+    flex-direction: row;
+    align-items: center;
+    margin-top: 20px;
+}
+
+.maintopContainer> .topContSect> .innerContent> .innerContSect> input[type="text"]{
+    font-family: var(--appFont);
+    font-size: 16px;
+    color: #fff;
+    padding: 5px 10px 5px 10px;
+    width: 60%;
+    border: none;
+    border-bottom: 1px solid #fff;
+    background-color: transparent;
+    outline: none;
+    margin-top: 10px;
+}
+
+.maintopContainer> .topContSect> .innerContent> .innerContSect> input[type="text"]::placeholder{
+    color: #fff;
+}
+
+.maintopContainer> .topContSect> .innerContent> .innerContSect> button{
+    font-family: var(--appFont);
+    font-size: 14px;
+    color: #fff;
+    background-color: var(--textColor);
+    padding: 10px;
+    width: 30%;
+    border: none;
+    border-radius: 5px;
+    background-color: var(--appColor);
+    outline: none;
+    font-weight: 500;
+    cursor: pointer;
+}
+
+.maintopContainer> .topContSect> .innerContent> .innerContSect> button:active{
+    transform: translateY(-2px);
+}
+
+
+.maintopContainer> .topContSect> h2{
+    font-size: 12px;
+    font-weight: 600;
+    color: var(--appColor);
+    background: rgb(235, 244, 255);
+    padding: 10px;
+    border-radius: 5px;
+    width: 40%;
+    
+}
+
+
+
+.maintopContainer> .topContSect> .topContSectLabel{
+    font-size: 12px;
+    font-weight: 600;
+    color: var(--appColor);
+    background: rgb(235, 244, 255);
+    padding: 5px;
+    border-radius: 5px;
+    width: 40%;
+    display: flex;
+    flex-direction: row;
+    align-items: center;
+}
+
+.maintopContainer> .topContSect> .topContSectLabel>p{
+    width: 50%;
+}
+
+.maintopContainer> .topContSect> .topContSectLabel> button{
+    font-size: 10px;
+    font-weight: 500;
+    color: #fff;
+    background: rgb(29, 93, 170);
+    padding: 5px;
+    border-radius: 5px;
+    width: 50%;
+    outline: none;
+    border: none;
+    cursor: pointer;
+    margin: 0px 5px 0px 5px;
+}
+
+.maintopContainer> .topContSect> .topContSectLabel> button:hover{
+    background: rgb(55, 118, 196);
+}
+
+.maintopContainer> .topContSect> .topContSectLabel> button:active{
+    transform: translateX(-2px);
+}
+
+.partA{
+    font-size: 12px;
+    width: 90%;
+    font-weight: 500;
+    margin-top: 10px;
+    line-height: 1.2rem;
+    color: #fff;
+}
+
+.maintopContainer> .topContSect> .messagesContainer{
+    margin: 5px 5px 10px 5px;
+    width: 100%;
+}
+
+.maintopContainer> .topContSect> .messagesContainer> .successMsg{
+    font-size: 10px;
+    font-weight: 500;
+    background-color: rgb(225, 255, 249);
+    color: rgb(39, 155, 132);
+    width: 40%;
+    padding: 10px;
+    border-radius: 10px;
+}
+
+.maintopContainer> .topContSect> .messagesContainer> .errorMsg{
+    font-size: 10px;
+    font-weight: 500;
+    background-color: rgb(255, 225, 225);
+    color: rgb(155, 39, 39);
+    width: 40%;
+    padding: 10px;
+    border-radius: 10px;
+}
+
+.maintopContainer> .topContSect> .messagesContainer> .warnMsg{
+    font-size: 10px;
+    font-weight: 500;
+    background-color: rgb(255, 251, 225);
+    color: rgb(155, 136, 39);
+    width: 40%;
+    padding: 10px;
+    border-radius: 10px;
+}
+
+.maintopContainer> .topContSect> .messagesContainer> .proMsg{
+    font-size: 10px;
+    font-weight: 500;
+    background-color: rgb(225, 240, 255);
+    color: var(--appColor);
+    width: 40%;
+    padding: 10px;
+    border-radius: 10px;
+}
+
+.maintopContainer> .topContSect> .roomsContainer{
+    margin: 5px 5px 20px 5px;
+    width: 100%;
+    height: 80%;
+    display: flex;
+    flex-direction: row;
+    flex-wrap: wrap;
+    gap: 10px;
+    overflow-y: auto;
+    overflow-x: hidden;
+   
+    
+}
+
+/*change appearance of vertical scroll bar*/
+.roomsContainer::-webkit-scrollbar {
+    width: 8px;
+    background-color: transparent; /* Transparent scrollbar container */
+}
+
+.roomsContainer::-webkit-scrollbar-track {
+    background-color: transparent; /* Transparent track */
+}
+
+.roomsContainer::-webkit-scrollbar-thumb {
+    background-color: var(--appColor); /* Blue thumb */
+    border-radius: 10px;
+    border: 2px solid transparent; /* Optional: spacing effect */
+}
+
+.roomsContainer::-webkit-scrollbar-thumb:hover {
+    background-color: var(--appColor); /* Darker blue on hover */
+}
+
+
+.maintopContainer> .topContSect> .roomsContainer> .rmCard{
+    width: 25%;
+    height: 150px;
+    padding: 10px;
+    border: none;
+    box-shadow: 0px 2px 4px  #e8e8e8;
+    border-radius: 5px;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+}
+
+.maintopContainer> .topContSect> .roomsContainer> .rmCard> .rmCardDel{
+    /*border: 1px solid #ccc;*/
+    padding: 4px;
+    width: 100%;
+    display: flex;
+    flex-direction: row-reverse;
+    align-items: center;
+    
+}
+
+.maintopContainer> .topContSect> .roomsContainer> .rmCard> .rmCardDel>button{
+    color: rgb(255, 93, 93);
+    background-color: transparent;
+    font-size: 13px;
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+    height: 13px;
+    width: 13px;
+    border: none;
+    border-radius: 50%;
+    cursor: pointer;
+}
+
+.maintopContainer> .topContSect> .roomsContainer> .rmCard> h3{
+    font-size: 14px;
+    font-weight: 600;
+    color: var(--appColor);
+}
+
+.fa-temperature-low{
+    font-size: 25px;
+    color: var(--appColor);
+}
+
+.maintopContainer> .topContSect> .roomsContainer> .rmCard> .rmCardTemp{
+    display: flex;
+    flex-direction: row;
+    justify-content: center;
+    align-items: center;
+    width: 100%;
+}
+
+.maintopContainer> .topContSect> .roomsContainer> .rmCard> .rmCardTemp> .tempValTxt{
+    color: #ccc;
+    font-size: 18px;
+}
+
+.maintopContainer> .topContSect> .roomsContainer> .rmCard> .rmCardTemp> p> .smallPText{
+    font-size: 10px;
+    margin-right: 5px;
+}
+
+
+/*For whenLight is on*/
+.maintopContainer> .topContSect> .roomsContainer> .rmCard> .rmCardLight{
+    display: flex;
+    flex-direction: row;
+    justify-content: center;
+    align-items: center;
+    width: 100%;
+}
+
+
+.rmCardLight> button{
+    background-color: rgba(255, 243, 178, 0.814);
+    color: rgb(161, 143, 44);
+    font-family: var(--appFont);
+    font-size: 12px;
+    font-weight: 600;
+    border: none;
+    padding: 5px 10px;
+    border-radius: 5px;
+    width: 50%;
+    cursor: pointer;
+}
+
+.rmCardLight> img{
+    height: 50px;
+    width: 50px;
+    object-fit: contain;
+}
+
+.rmCardLight> button:active{
+    transform: translateY(-2px);
+}
+
+/*For whenLight is off*/
+.maintopContainer> .topContSect> .roomsContainer> .rmCard> .rmCardLightOff{
+    display: flex;
+    flex-direction: row;
+    justify-content: center;
+    align-items: center;
+    width: 100%;
+}
+
+
+.rmCardLightOff> button{
+    background-color: rgb(218, 218, 218);
+    color: #333;
+    font-family: var(--appFont);
+    font-size: 12px;
+    font-weight: 600;
+    border: none;
+    padding: 5px 10px;
+    border-radius: 5px;
+    width: 50%;
+    cursor: pointer;
+}
+
+.rmCardLightOff> img{
+    height: 50px;
+    width: 50px;
+    object-fit: contain;
+}
+
+.rmCardLightOff> button:active{
+    transform: translateY(-2px);
+}
+
+.chartContainerBox {
+    width: 92%;
+    border: 1px solid #ccc;
+    border-radius: 10px;
+}
+
+
+
+@media screen and (max-width: 900px){
+    
+}
