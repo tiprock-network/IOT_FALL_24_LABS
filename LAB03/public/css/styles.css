@@ -9,12 +9,13 @@
     --appColor: rgb(44, 98, 190);
 }
 
+
 body{
     overflow-x: hidden;
     font-family: var(--appFont);
     font-size: var(--textSize);
     color: var(--textSize);
-    height: 100vh;
+    /*height: 100vh;*/
     display: flex;
     flex-direction: column;
     align-items: center;
@@ -170,7 +171,7 @@ nav>ul>li>a:hover{
     background: rgb(235, 244, 255);
     padding: 5px;
     border-radius: 5px;
-    width: 40%;
+    width: 60%;
     display: flex;
     flex-direction: row;
     align-items: center;
@@ -431,6 +432,111 @@ nav>ul>li>a:hover{
     border-radius: 10px;
 }
 
+.topTempStats{
+    font-size: 9px;
+    background: rgb(176, 221, 245);
+    text-align: center;
+    padding: 2px;
+    border-radius: 5px;
+}
+
+.aboutContainer{
+    /*border: 1px solid red;*/
+    width: 100%;
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+    padding: 20px 0px 20px 0px;
+    
+}
+
+.aboutContainer> .aboutImageCont{
+    width: 40%;
+    height: 40%;
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+    border: 1px solid #ccc;
+    border-radius: 8px;
+    color: #555;
+    padding: 15px;
+}
+
+.aboutContainer> .aboutImageCont> img{
+    width: 120px;
+    height: 120px;
+    border-radius: 50%;
+    object-fit: contain;
+}
+
+.infoSec{
+    width: 40%;
+    height: auto;
+    display: flex;
+    flex-direction: row;
+    justify-content: center;
+    gap: 15px;
+    /*align-items: center;*/
+    flex-wrap: wrap;
+    /*border: 1px solid #ccc;*/
+    border-radius: 8px;
+    color: #555;
+    margin-top: 20px;
+}
+
+.infoSec> .courseDet{
+    /*border-right: 1px solid #ccc;*/
+    display: flex;
+    flex-direction: column;
+    width: 40%;
+    padding: 15px;
+    border: 1px solid #ccc;
+    border-radius: 8px;
+}
+
+.infoSec> .projInfo{
+    width: 40%;
+    font-size: 12px;
+    border: 1px solid #ccc;
+    border-radius: 8px;
+    padding: 15px;
+    line-height: 1.9em;
+}
+
+.infoSec> .projInfo> p{
+    margin-left: 15px;
+}
+
+.infoSec> .courseDet> .courseDetImg> img{
+    height: 70px;
+    width: 70px;
+    object-fit: contain;
+}
+
+.infoSec> .courseDet> .courseDetInfo{
+    margin-right: 10px;
+}
+
+.infoSec> .courseDet> .courseDetInfo> h3{
+    font-weight: 500;
+}
+
+footer{
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+    background-color: var(--appColor);
+    color: #fff;
+    font-weight: 500;
+    font-size: 12px;
+    width: 100%;
+    padding: 5px 0px 10px 0px;
+    margin-top: 11%;
+    position: static;
+}
 
 
 @media screen and (max-width: 900px){

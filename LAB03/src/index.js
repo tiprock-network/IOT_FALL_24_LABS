@@ -31,15 +31,36 @@ app.use(express.urlencoded(
     {extended:false}
 ))
 
+const PORT = process.env.PORT || 4000
+const BASE_URL = process.env.BASE_URL || 'http://localhost'
+
 //start the base URL with the dashboard
-app.get('/', (req,res) => {
-    res.render('dashboard')
+app.get('/', async (req,res) => {
+    const avgTempResponse = await fetch(`${BASE_URL}:${PORT}/api/rooms/average-temperature`,{
+        method: 'GET',
+        headers:{
+            'Content-Type':'application/json'
+        }
+    })
+
+    if(!avgTempResponse.ok){
+        return res.render('dashboard',{avgTemp:'--.-'})
+    }
+
+    const avgTempBody = await avgTempResponse.json()
+    const avgTemp = avgTempBody.average_temperature
+    res.render('dashboard',{avgTemp:avgTemp})
+})
+
+//start the base URL with the dashboard
+app.get('/about', (req,res) => {
+    res.render('about')
 })
 
 
 app.use('/api', roomRoute) //here we use the route
 
-const PORT = process.env.PORT || 4000
+
 
 app.listen(PORT, async () => {
     console.log('Carnegie'.bgRed.white)
