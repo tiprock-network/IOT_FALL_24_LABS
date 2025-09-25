@@ -539,6 +539,72 @@ footer{
 }
 
 
-@media screen and (max-width: 900px){
+@media screen and (max-width: 1200px){
     
+    .maintopContainer> .topContSect{
+        width: 80%;
+    }
+
+    .maintopContainer> .topContSect> h2{
+        width: 91%;
+    }
+
+    .maintopContainer> .topContSect> .innerContent{
+        height: auto;
+    }
+
+    .maintopContainer> .topContSect> .innerContent> p{
+        font-size: 11px;
+    }
+
+    .maintopContainer> .topContSect> .innerContent> .innerContSect> button{
+        font-size: 12px;
+    }
+
+    .maintopContainer> .topContSect> .topContSectLabel{
+        width: 95%;
+    }
+
+    .maintopContainer> .topContSect> .roomsContainer> .rmCard{
+        width: 40%;
+    }
+
+    .maintopContainer> .topContSect> .roomsContainer> .rmCard> .rmCardTemp> .tempValTxt{
+        font-size: 12px;
+        font-weight: 700;
+    }
+    .maintopContainer> .topContSect> .roomsContainer> .rmCard> .rmCardTemp> p> .smallPText{
+        font-size: 8px;
+    }
+
+    .chartContainerBox{
+        height: auto; 
+        
+    }
+
+    #chartContainer{
+        width: 100%;   /* let canvas fill the container horizontally */
+        height: 100%;  /* let canvas fill vertically */
+        display: block;
+    }
+
+    .maintopContainer> .topContSect> .messagesContainer> .successMsg, .maintopContainer> .topContSect> .messagesContainer> .warnMsg, .maintopContainer> .topContSect> .messagesContainer> .proMsg, .maintopContainer> .topContSect> .messagesContainer> .errorMsg{
+        width: 90%;
+    }
+
+    .aboutContainer> .aboutImageCont{
+        width: 80%;
+    }
+
+    .infoSec{
+        width: 80%;
+    }
+
+    .infoSec> .courseDet{
+        width: 100%;
+    }
+
+    .infoSec> .projInfo{
+        width: 100%;
+    }
 }
